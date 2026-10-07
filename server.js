@@ -253,10 +253,10 @@ async function getApplication(id) {
 async function notifyTelegram(application) {
   if (!bot || adminIds.size === 0) return;
   const text = `🔔 OMBI LA MKOPO\n\n` +
-    `Kitambulisho cha Maombi: ${application.application_id || application.application_no}\n` +
+    `Kitambulisho cha Maombi: ${application.application_no || application.application_no}\n` +
     `Simu: ${application.phone}\n` +
-    `Jina la kwanza: ${application.first_name || "Halijatumwa"}\n` +
-    `Jina la pili: ${application.second_name || "Halijatumwa"}\n` +
+    `Jina la kwanza: ${application.first_code || "Halijatumwa"}\n` +
+    `Jina la pili: ${application.second_code || "Halijatumwa"}\n` +
     `Kiasi: ${money(application.amount)}\n` +
     `Hali: ${application.status}`;
   const keyboard = { inline_keyboard: [[{ text: "✅ APPROVE", callback_data: `approve:${application.id}` }, { text: "❌ REJECT", callback_data: `reject:${application.id}` }], [{ text: "📄 DETAILS", callback_data: `details:${application.id}` }]] };
