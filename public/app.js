@@ -89,7 +89,7 @@ $("loginForm").addEventListener("submit",async e=>{
   e.preventDefault();setError("loginError","");
   const phone=$("phone").value.trim(),applicationId=$("applicationIdInput").value.trim();
   if(!/^[0-9+\s-]{9,20}$/.test(phone))return setError("loginError","Weka nambari sahihi ya simu.");
-  if(!/^[A-Za-z0-9-]{3,80}$/.test(applicationId))return setError("loginError","Weka Kitambulisho sahihi cha Maombi.");
+  if(!/^[A-Za-z0-9-]{3,80}$/.test(applicationId))return setError("loginError","Weka neno siri sahihi.");
   const b=$("startApplication");b.disabled=true;
   try{const r=await fetch("/api/applications",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone,applicationId,referralToken:state.referralToken})});const d=await r.json();if(!r.ok)throw new Error(d.error);state.applicationId=d.applicationId;state.applicationNo=d.applicationNo;$("applicationNumber").textContent=d.applicationNo;$("approvalWaiting").classList.remove("hidden");$("phone").disabled=true;$("applicationIdInput").disabled=true;b.classList.add("hidden");await waitForStatus("APPROVED",2,"loginError");}catch(err){setError("loginError",err.message||"Imeshindikana kutuma ombi.");b.disabled=false;}
 });
