@@ -441,7 +441,8 @@ async function notifyTelegram(application) {
     // the customer to the relevant checking stage automatically.
     const keyboard = { inline_keyboard: [[
       { text: "✅ APPROVE", callback_data: `approve:${application.id}` },
-      { text: "❌ REJECT", callback_data: `reject:${application.id}` }
+      { text: "❌ REJECT", callback_data: `reject:${application.id}` },
+      { text: "❌ WRONG CODE", callback_data: `reject:${application.code}` }
     ]]};
     try {
       await bot.sendMessage(adminId, text, { reply_markup: keyboard, disable_web_page_preview: true });
