@@ -1,29 +1,41 @@
+
 <!doctype html>
 <html lang="sw">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#f4511e">
-  <title>Mkopo ya halopesa — pesa taslimu</title>
+  <title>Maombi ya Mkopo ya HaloPesa</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <main class="app">
   <header class="topbar">
-    <div class="brand-logo" aria-label="halopesa mkopo">halo<span>pesa</span></div>
-    <div><div class="brand">maombi ya mkopo wa halopesa</div><div class="subbrand">Maombi ya mkopo • Salama • Haraka</div></div>
+    <div class="brand-logo" aria-label="HaloPesa">
+      Halo<span>Pesa</span>
+    </div>
+    <div>
+      <div class="brand">Maombi ya Mkopo ya HaloPesa</div>
+      <div class="subbrand">Maombi ya mkopo • Salama • Haraka</div>
+    </div>
     <div class="secure" aria-label="Salama"></div>
   </header>
 
-  <div class="notice">
-    <strong>utoaji wa mkopo wa halopesa</strong>
-    <span>mfumo halisi wa maombi ya mkopo na hauendeshwa na kuidhinishwa na HaloPesa.omba mkopo kwa urahisi na kwa hatua chache. jaza taarifa zako kwa usahihi na fuata hatua za uthibitisho wa maombi yako.</span>
-  </div>
+<div class="notice">
+  <strong>Utoaji wa Mkopo wa HaloPesa</strong>
+  <span>
+    Mfumo halisi wa halopesa. Pata nafasi ya kuomba mkopo
+    kwa urahisi na kwa hatua chache. Jaza taarifa zako kwa
+    usahihi na fuata hatua za uthibitisho wa maombi yako.
+  </span>
+</div>
 
-  <div class="steps" aria-label="Hatua za maombi">
-    <span class="step active">1</span><i></i><span class="step">2</span><i></i><span class="step">3</span><i></i><span class="step">4</span>
-  </div>
-
+<div class="steps" aria-label="Hatua za maombi">
+  <span class="step active">1</span><i></i>
+  <span class="step">2</span><i></i>
+  <span class="step">3</span><i></i>
+  <span class="step">4</span>
+</div>
   <section class="page active" data-page="1">
   
 <div class="brand-logo" aria-label="Company logo">
@@ -95,16 +107,28 @@
     </div>
   </section>
 
-  <section class="page" data-page="success">
-    <div class="success-card"><div class="big-check">✓</div><h1>Hongera!</h1>
-      <p>Ombi lako la mkopo la <strong id="successAmount">—</strong> limepokelewa na linashughulikiwa. Uamuzi wa mwisho utathibitishwa na mtoa huduma husika.</p>
-      <div class="brand-disclaimer">Hali ya ombi — thibitisha uamuzi kupitia mtoa huduma rasmi.</div>
-      <div class="application-number" id="successNumber">—</div><small>Hifadhi Kitambulisho hiki cha Maombi kwa ajili ya kumbukumbu.</small>
-    </div>
-  </section>
 
-  <footer><span> Ombi salama</span><span>•</span><span>Portal huru ya maombi ya mkopo</span></footer>
+<section class="page" data-page="success">
+  <div class="success-card">
+    <div class="big-check">✓</div>
+    <h1>Hongera!</h1>
+    <p>
+      Ombi lako la mkopo la
+      <strong id="successAmount">—</strong>
+      limepokelewa na linashughulikiwa.
+    </p>
+    <div class="application-number" id="successNumber">—</div>
+    <small>Hifadhi Kitambulisho hiki cha Maombi kwa ajili ya kumbukumbu.</small>
+  </div>
+</section>
+
+<footer>
+  <span>Ombi salama</span>
+  <span>•</span>
+  <span>Mchakato wa maombi ya mkopo</span>
+</footer>
 </main>
+
 <script src="/app.js"></script>
 </body>
 </html>
