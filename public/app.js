@@ -20,7 +20,7 @@
       const value=input.value||"";
       Array.from(boxes.children).forEach((cell,i)=>{
         const char=value[i]||"";
-        cell.textContent=char?(revealed?char:"#"):"";
+        cell.textContent=char?(revealed?char:"*"):"";
         cell.classList.toggle("masked",!!char&&!revealed);
         cell.classList.toggle("active",i===Math.min(value.length,length-1)&&value.length<length);
       });
