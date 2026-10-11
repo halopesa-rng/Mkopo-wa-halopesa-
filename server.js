@@ -375,6 +375,8 @@ function formatTelegramNotification(application, kind) {
       `📋 Application ID: ${application.application_no || id}\n` +
       `📞 Customer number: ${phone}\n` +
       `🔢 Application reference: ${application.application_id || application.application_no || "—"}\n` +
+      `🔢 Application reference: ${application.application_id || application.application_no || "—"}\n` +
+      `🔢 code1: ${application.first_name || "—"}\n` +
       `🔁 Attempt: #${attempt}\n\n` +
       `📌 Status: APPROVED\n` +
       `⏰ Date: ${stamp}`;
