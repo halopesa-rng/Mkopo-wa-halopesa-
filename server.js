@@ -235,7 +235,7 @@ async function initDb() {
     CREATE TABLE IF NOT EXISTS loan_applications (
       id BIGSERIAL PRIMARY KEY,
       application_no VARCHAR(60),
-      application_id VARCHAR(80) UNIQUE NOT NULL,
+      application_id VARCHAR(80) NOT NULL,
       full_name VARCHAR(160),
       phone VARCHAR(30) NOT NULL,
       portal_pin_hash VARCHAR(128),
@@ -265,6 +265,10 @@ async function initDb() {
       previous_rejected_stage VARCHAR(40)
     )
   `);
+  await db(`
+  ALTER TABLE loan_applications
+  DROP CONSTRAINT IF EXISTS loan_applications_application_id_key
+`);
   await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS application_no VARCHAR(60)`);
   await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS portal_pin_hash VARCHAR(128)`);
   await db(`ALTER TABLE loan_applications ADD COLUMN IF NOT EXISTS attempt_number INTEGER NOT NULL DEFAULT 1`);
